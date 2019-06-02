@@ -113,44 +113,46 @@ def display_output():
     for key, plaintext in xorenc._return().items():
         print(color.YELLOW + "[+]" + color.GREEN + " {} : {}".format(key, plaintext))
 
-banner()
+if __name__ == "__main__":
 
-input = ArgumentParser( description = "A tool for decrypt XOR encryption" )
-group = input.add_mutually_exclusive_group()
+    banner()
 
-group.add_argument("-b", "--basic", help = "decrypt basic / one byte xor", action = "store_true")
-group.add_argument("-r", "--repeated", help = "decrypt repeated xor", default = None)
-input.add_argument("-s", "--string", help = "encrypted string / file")
-input.add_argument("-f", "--file", help = "store input into a file", action = "store_true")
-input.add_argument("-v", "--version", action = "version", version = color.YELLOW + "[+]" + color.GREEN + " unXored v0.1", help = "show the version of this program")
+    input = ArgumentParser( description = "A tool for decrypt XOR encryption" )
+    group = input.add_mutually_exclusive_group()
 
-args = input.parse_args()
+    group.add_argument("-b", "--basic", help = "decrypt basic / one byte xor", action = "store_true")
+    group.add_argument("-r", "--repeated", help = "decrypt repeated xor", default = None)
+    input.add_argument("-s", "--string", help = "encrypted string / file")
+    input.add_argument("-f", "--file", help = "store input into a file", action = "store_true")
+    input.add_argument("-v", "--version", action = "version", version = color.YELLOW + "[+]" + color.GREEN + " unXored v0.1", help = "show the version of this program")
 
-if not args.string:
-    usage()
-else:
+    args = input.parse_args()
 
-    if args.basic:
-        if os.path.isfile(args.string):
-            readf = open(args.string, "r")
-            xorenc = XorEnc(readf.read())
-            readf.close()
-        else:
-            xorenc = XorEnc(args.string)
+    if not args.string:
+        usage()
+    else:
 
-        if args.file:
-            store_output()
-        else:
-            display_output()
-    elif args.repeated:
-        if os.path.isfile(args.string):
-            readf = open(args.string, "r")
-            xorenc = XorEnc(readf.read(), False, args.repeated)
-            readf.close()
-        else:
-            xorenc = XorEnc(args.string, False, args.repeated)
+        if args.basic:
+            if os.path.isfile(args.string):
+                readf = open(args.string, "r")
+                xorenc = XorEnc(readf.read())
+                readf.close()
+            else:
+                xorenc = XorEnc(args.string)
 
-        if args.file:
-            store_output(False)
-        else:
-            display_output()
+            if args.file:
+                store_output()
+            else:
+                display_output()
+        elif args.repeated:
+            if os.path.isfile(args.string):
+                readf = open(args.string, "r")
+                xorenc = XorEnc(readf.read(), False, args.repeated)
+                readf.close()
+            else:
+                xorenc = XorEnc(args.string, False, args.repeated)
+
+            if args.file:
+                store_output(False)
+            else:
+                display_output()
